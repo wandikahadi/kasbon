@@ -3,9 +3,9 @@ import {
   ArrowUpRight,
   CheckCircle2,
   CircleDashed,
-  MoreHorizontal,
 } from "lucide-react";
 
+import { DebtActions } from "@/features/debts/components/debt-actions";
 import type { Debt } from "@/features/debts/types/debt.types";
 import { formatRupiah } from "@/lib/utils/currency";
 import { formatRelativeDate } from "@/lib/utils/date";
@@ -25,59 +25,62 @@ export function DebtCard({
 
   const relativeDate =
     formatRelativeDate(
-      debt.due_date ?? debt.created_at
+      debt.due_date ??
+        debt.created_at
     );
 
   return (
     <article className="rounded-2xl border border-neutral-200 bg-white p-4 transition hover:border-neutral-300 sm:p-5">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex min-w-0 items-start gap-3">
-          <div
-            className={
-              isOwedToMe
-                ? "flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700"
-                : "flex size-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-700"
-            }
-          >
-            {isOwedToMe ? (
-              <ArrowDownLeft className="size-5" />
-            ) : (
-              <ArrowUpRight className="size-5" />
-            )}
-          </div>
+      <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex min-w-0 items-start gap-3">
+            <div
+              className={
+                isOwedToMe
+                  ? "flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700"
+                  : "flex size-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-700"
+              }
+            >
+              {isOwedToMe ? (
+                <ArrowDownLeft className="size-5" />
+              ) : (
+                <ArrowUpRight className="size-5" />
+              )}
+            </div>
 
-          <div className="min-w-0 space-y-1">
-            <h3 className="truncate font-medium text-neutral-950">
-              {debt.counterpart_name}
-            </h3>
+            <div className="min-w-0 space-y-1">
+              <h3 className="truncate font-medium text-neutral-950">
+                {debt.counterpart_name}
+              </h3>
 
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-neutral-500">
-              <span>
-                {isOwedToMe
-                  ? "Dihutang ke saya"
-                  : "Saya hutang"}
-              </span>
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-neutral-500">
+                <span>
+                  {isOwedToMe
+                    ? "Dihutang ke saya"
+                    : "Saya hutang"}
+                </span>
 
-              <span
-                aria-hidden="true"
-                className="text-neutral-300"
-              >
-                •
-              </span>
+                <span
+                  aria-hidden="true"
+                  className="text-neutral-300"
+                >
+                  •
+                </span>
 
-              <span>{relativeDate}</span>
+                <span>
+                  {relativeDate}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="flex flex-col gap-3 border-t border-neutral-100 pt-4 sm:min-w-48 sm:items-end sm:border-0 sm:pt-0">
-          <p className="text-lg font-semibold tracking-tight text-neutral-950">
-            {formatRupiah(
-              Number(debt.amount)
-            )}
-          </p>
+          <div className="flex items-center justify-between gap-4 border-t border-neutral-100 pt-4 sm:flex-col sm:items-end sm:border-0 sm:pt-0">
+            <p className="text-lg font-semibold tracking-tight text-neutral-950 sm:text-xl">
+              {formatRupiah(
+                Number(debt.amount)
+              )}
+            </p>
 
-          <div className="flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-end">
             {isSettled ? (
               <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">
                 <CheckCircle2 className="size-3.5" />
@@ -89,25 +92,21 @@ export function DebtCard({
                 Belum lunas
               </span>
             )}
-
-            <button
-              type="button"
-              aria-label={`Aksi untuk ${debt.counterpart_name}`}
-              className="flex size-9 items-center justify-center rounded-lg border border-neutral-200 text-neutral-500 transition hover:bg-neutral-50 hover:text-neutral-950"
-            >
-              <MoreHorizontal className="size-4" />
-            </button>
           </div>
         </div>
-      </div>
 
-      {debt.note ? (
-        <div className="mt-4 rounded-xl bg-neutral-50 px-3.5 py-3">
-          <p className="text-sm leading-6 text-neutral-600">
-            {debt.note}
-          </p>
+        {debt.note ? (
+          <div className="rounded-xl bg-neutral-50 px-3.5 py-3">
+            <p className="text-sm leading-6 text-neutral-600">
+              {debt.note}
+            </p>
+          </div>
+        ) : null}
+
+        <div className="border-t border-neutral-100 pt-4">
+          <DebtActions debt={debt} />
         </div>
-      ) : null}
+      </div>
     </article>
   );
 }

@@ -1,28 +1,31 @@
 import {
-  Plus,
   WalletCards,
 } from "lucide-react";
 
 import { LogoutButton } from "@/features/auth/components/logout-button";
+import { CreateDebtButton } from "@/features/debts/components/create-debt-button";
 import { DebtList } from "@/features/debts/components/debt-list";
 import { DebtSummary } from "@/features/debts/components/debt-summary";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function DashboardPage() {
-  const supabase = await createClient();
+  const supabase =
+    await createClient();
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: debts, error } =
-    await supabase
-      .from("debts")
-      .select("*")
-      .eq("user_id", user!.id)
-      .order("created_at", {
-        ascending: false,
-      });
+  const {
+    data: debts,
+    error,
+  } = await supabase
+    .from("debts")
+    .select("*")
+    .eq("user_id", user!.id)
+    .order("created_at", {
+      ascending: false,
+    });
 
   if (error) {
     throw new Error(
@@ -54,7 +57,9 @@ export default async function DashboardPage() {
         </header>
 
         <div className="space-y-8">
-          <DebtSummary debts={debts ?? []} />
+          <DebtSummary
+            debts={debts ?? []}
+          />
 
           <section className="space-y-4">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -64,20 +69,17 @@ export default async function DashboardPage() {
                 </h2>
 
                 <p className="text-sm text-neutral-500">
-                  {debts?.length ?? 0} catatan tersimpan
+                  {debts?.length ?? 0}{" "}
+                  catatan tersimpan
                 </p>
               </div>
 
-              <button
-                type="button"
-                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-neutral-950 px-4 text-sm font-medium text-white transition hover:bg-neutral-800 sm:w-auto"
-              >
-                <Plus className="size-4" />
-                Catat baru
-              </button>
+              <CreateDebtButton />
             </div>
 
-            <DebtList debts={debts ?? []} />
+            <DebtList
+              debts={debts ?? []}
+            />
           </section>
         </div>
       </div>
