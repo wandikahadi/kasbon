@@ -11,9 +11,7 @@ export type DebtUpdate =
 
 export type DebtType = Debt["type"];
 
-export type DebtStatus =
-  | "unsettled"
-  | "settled";
+export type DebtStatus = "unsettled" | "settled";
 
 export type DebtStatusFilter =
   | "all"
