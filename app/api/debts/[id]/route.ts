@@ -6,7 +6,7 @@ import type { DebtUpdate } from "@/features/debts/types/debt.types";
 import {
   errorResponse,
   successResponse,
-} from "@/lib/api/response";
+} from "@/app/api/response";
 import { createClient } from "@/lib/supabase/server";
 
 type RouteContext = {

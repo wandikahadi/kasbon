@@ -5,7 +5,7 @@ import {
 import {
   errorResponse,
   successResponse,
-} from "@/lib/api/response";
+} from "@/app/api/response";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: Request) {
